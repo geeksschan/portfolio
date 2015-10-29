@@ -1,0 +1,18 @@
+/* 매우 작은 기기들 (모바일폰, 768px 보다 작은) */
+/* 부트스트랩에서 이것은 기본이므로 미디어쿼리가 없습니다. */
+
+
+/* 작은 기기들 (태블릿, 768px 이상) */
+@media screen and (min-width: 768px) {
+
+}
+
+/* 중간 기기들 (데스크탑, 992px 이상) */
+@media screen and (min-width: 992px) {
+
+}
+
+/* 큰 기기들 (큰 데스크탑, 1200px 이상) */
+@media screen and (min-width: 1200px) {
+
+}
