@@ -11,7 +11,14 @@
     <link rel="stylesheet" href="/assets/css/default.css">
     <?php $this->assets->outputCss(); ?>
 </head>
-<body>
+<body class="loading">
+<div id="init-loading" class="loading">
+    <div>
+        <h1>SSCHAN</h1>
+        <p>My nickname is <strong>sseba</strong></p>
+        <img src="/assets/img/svg-loaders/puff.svg" />
+    </div>
+</div>
 <?php echo $this->getContent(); ?>
 <script src="/assets/js/jquery-2.1.4.js"></script>
 <script src="/assets/js/bootstrap.js"></script>

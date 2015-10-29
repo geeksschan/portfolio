@@ -3,6 +3,54 @@ div {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+
+
+#init-loading {
+    position: absolute;
+    display: table;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    top: 0;
+    background-color:#2C3E50;
+    transition: height 1s, top 2s;
+    -webkit-transition: height 1s, top 2s;
+    -webkit-transition-delay: 2s;
+    transition-delay: 2s;
+    transition-timing-function: ease-in;
+}
+#init-loading.loading {
+
+}
+#init-loading > div {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+#init-loading > div > h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #e5e5e5;
+}
+#init-loading > div > p {
+    margin-top: 0;
+    color: #ccc;
+}
+#init-loading > div > p > strong {
+    font-weight: 400;
+    color: #08B3DA;
+    background: -webkit-linear-gradient(#B2F72D, #08B3DA);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body {
+    overflow: auto;
+}
+body.loading {
+    overflow-y: hidden;
+}
+
 #ssc-navbar-backdrop {
     display: none;
     content: "";
@@ -37,7 +85,7 @@ div {
 .ssc-navbar {
     position: relative;
     display: block;
-    background-color: #333;
+    background-color: #2C3E50;
     color: #fff;
 }
 .ssc-navbar-default {

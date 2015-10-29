@@ -30,3 +30,16 @@
     width: 600px;
     margin: 0 auto;
 }
+
+/* test case */
+.test {
+    width: 100px;
+    height: 100px;
+    background: red;
+    -webkit-transition: width 2s, height 4s;
+    transition:  width 2s, height 4s;
+}
+.test:hover {
+    width: 200px;
+    height: 300px;
+}
