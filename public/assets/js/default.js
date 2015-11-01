@@ -18,14 +18,19 @@ $(function() {
     // drawer menu open/close
     $(".ssc-btn-sidebar").on("click", function() {
         var $menu = $(".menu"),
-            $navbar_backdrop = $("#ssc-navbar-backdrop");
+            $navbar_backdrop = $("#ssc-navbar-backdrop"),
+            $ssc_right_to = $(this).find(".ssc-right-to");
         if($menu.length > 0) {
             if($menu.hasClass("open")) {
                 $menu.removeClass("open");
                 $navbar_backdrop.removeClass("open");
+                $(this).removeClass("active");
+                //$ssc_right_to.css("transform", "rotate(45deg)");
             } else {
                 $menu.addClass("open");
                 $navbar_backdrop.addClass("open");
+                $(this).addClass("active");
+                //$ssc_right_to.css("transform", "rotate(225deg)");
             }
         }
     });
