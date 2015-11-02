@@ -63,6 +63,32 @@ body.loading {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+.close-btn {
+    position: absolute;
+    left: 265px;
+    top: 28px;
+}
+.close-btn .icon-bar {
+    position: absolute;
+    display: block;
+    width: 22px;
+    height: 3px;
+    background-color: #fff;
+    /* border-radius: 1px; */
+}
+.close-btn .icon-bar.first {
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.close-btn .icon-bar.last {
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
 
 #ssc-navbar-backdrop.open {
     display: block;
@@ -101,7 +127,7 @@ body.loading {
     z-index : 1030;
 }
 
-.ssc-btn-sidebar {
+.ssc-btn-sidebar,.ssc-btn-sidebar.touch-end:hover {
     position: absolute;
     top: 6px;
     padding: 10px;
@@ -112,9 +138,15 @@ body.loading {
     vertical-align: middle;
     outline: none;
     transition: 0.5s all;
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
 }
 .ssc-btn-sidebar:hover {
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
 
@@ -129,7 +161,7 @@ body.loading {
     border: 0;
 }
 
-.ssc-btn-sidebar .ssc-sidebar-icon {
+.ssc-btn-sidebar .ssc-sidebar-icon,.ssc-btn-sidebar.touch-end:hover .ssc-sidebar-icon {
     display: block;
     width: 22px;
     height: 2px;
@@ -157,13 +189,22 @@ body.loading {
     border-right: 2px solid #ddd;
     /*transition: opacity 0.5s linear;*/
     transition: 0.5s all;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    -o-transform: rotate(45deg);
     transform: rotate(45deg);
 }
 .ssc-btn-sidebar.active .ssc-right-to {
+    -ms-transform: rotate(225deg); /* IE 9 */
+    -webkit-transform: rotate(225deg); /* Chrome, Safari, Opera */
+    -o-transform: rotate(225deg);
     transform: rotate(225deg);
 }
 .ssc-btn-sidebar:hover .ssc-right-to {
     display: inline-block;
+}
+.ssc-btn-sidebar.touch-end .ssc-right-to {
+    display: none;
 }
 
 /* 작은 기기들 (데스크탑, 768px 이상) */
