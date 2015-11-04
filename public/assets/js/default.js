@@ -21,19 +21,15 @@ window.onload = function() {
     }, 3000);
 
     if($skill_item.length > 0) {
-        console.log($skill_row_height);
-        console.log($skill_row.width()*0.2);
-        if($skill_row_height > $skill_row.width()*0.2) {
+        $section_2_padding_height = $section_2.closest(".section").find(".border-section").innerHeight();
+        $section_2.css("padding-top", $section_2_padding_height+"px");
+        if($section_2.height() * 0.3 > $skill_row.width()*0.2) {
             //가로 길이 사용
-            console.log("가로사용");
             $skill_item_width = $skill_item.width();
             $skill_item.height($skill_item_width);
         } else {
             //세로 길이 사용
-            console.log("세로사용");
             $section_2.addClass("height");
-            $section_2_padding_height = $section_2.closest(".section").find(".border-section").innerHeight();
-            $section_2.css("padding-top", $section_2_padding_height+"px");
             $skill_row_height = $skill_row.height();
             $skill_item.width($skill_row_height);
             $skill_item.height($skill_row_height);
