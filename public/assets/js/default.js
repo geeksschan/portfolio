@@ -1,11 +1,17 @@
 window.onload = function() {
     var $body = $("body"),
+        $window = $(window),
+        $window_width = $window.width(),
+        $window_height = $window.height(),
+        $section_2 = $(".section-2"),
+        $skill_row = $section_2.find(".skill-row"),
         $init_loading = $("#init-loading"),
         $loading_div = $init_loading.find("div"),
         $loading_div_height = $loading_div.height(),
         $skill_item = $(".skill-row").find(".item"),
-        $skill_item_width = 0;
-
+        $skill_item_width = 0,
+        $skill_row_height = 0,
+        $section_2_padding_height = 0;
 
     $init_loading.css("height", 0).css("top", -$loading_div_height+"px");
 
@@ -15,8 +21,25 @@ window.onload = function() {
     }, 3000);
 
     if($skill_item.length > 0) {
-        $skill_item_width = $skill_item.width();
-        $skill_item.height($skill_item_width);
+        console.log($skill_row_height);
+        console.log($skill_row.width()*0.2);
+        if($skill_row_height > $skill_row.width()*0.2) {
+            //가로 길이 사용
+            console.log("가로사용");
+            $skill_item_width = $skill_item.width();
+            $skill_item.height($skill_item_width);
+        } else {
+            //세로 길이 사용
+            console.log("세로사용");
+            $section_2.addClass("height");
+            $section_2_padding_height = $section_2.closest(".section").find(".border-section").innerHeight();
+            $section_2.css("padding-top", $section_2_padding_height+"px");
+            $skill_row_height = $skill_row.height();
+            $skill_item.width($skill_row_height);
+            $skill_item.height($skill_row_height);
+
+        }
+
     }
 
 };
