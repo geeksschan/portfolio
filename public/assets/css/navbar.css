@@ -270,7 +270,7 @@ body.loading {
     color: #fff;
     text-decoration: none;
 }
-.menu ul > li > a:hover {
+.menu ul > li > a:hover,.menu ul > li > a.active {
     /*background-color: #5f5f5f;*/
     background-color: #3B9A61;
     color: #fff;

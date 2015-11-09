@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var $page_location string
+ */
+?>
+
+
 <div class="ssc-navbar ssc-navbar-fixed-top">
     <div class="ssc-container">
         <button type="button" class="ssc-btn-sidebar">
@@ -13,13 +20,13 @@
         </div>
         <div class="menu ssc-pull-right">
             <ul class="ssc-clearfix">
-                <li><a href="">소개</a></li>
-                <li><a href="">스킬</a></li>
-                <li><a href="">포트폴리오</a></li>
+                <li><a href="javascript:void(0)" class="intro-page active">소개</a></li>
+                <li><a href="javascript:void(0)" class="skill-page">스킬</a></li>
+                <li><a href="javascript:void(0)" class="portfolio-page">포트폴리오</a></li>
             </ul>
         </div>
     </div>
 </div>
-<div class="main">
+<div class="main  <?php echo $page_location; ?>">
 <?php echo $this->getContent() ; ?>
 </div>
