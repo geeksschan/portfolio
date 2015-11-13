@@ -6,6 +6,7 @@ div {
 .main > section > div {
     padding-top: 50px;
 }
+
 #init-loading {
     position: absolute;
     display: table;
@@ -225,6 +226,11 @@ body.loading {
     padding: 19px 15px 15px;
     font-size: 16px;
     line-height: 16px;
+}
+
+.ssc-navbar .ssc-brand > h1 > a {
+    color: #fff;
+    text-decoration: none;
 }
 .ssc-navbar .ssc-brand > p {
     display: inline-block;
@@ -561,7 +567,7 @@ body.loading {
     padding-right: 40px;
 }
 
-.section-3 .item {
+.section-3 .ssc-item {
     height: 200px;
     background-image: url("../img/drawing.jpg");
     background-position: top;
@@ -572,8 +578,9 @@ body.loading {
 
 .section-3 .item-start,.section-3 .item-end {
     padding: 20px 30px;
+    background-image: none;
 }
-.section-3 .item-start span, .section-3 .item .line {
+.section-3 .item-start span, .section-3 .ssc-item .line {
     display: block;
     width: 50px;
     height: 2px;
@@ -586,60 +593,60 @@ body.loading {
     line-height: 22px;
 }
 
-.item > .hover-bg {
+.section-3 .ssc-item > .hover-bg {
     display: none;
     padding: 20px 30px;
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0, 0.6);
 }
-.item:hover > .hover-bg {
+.section-3 .ssc-item:hover > .hover-bg {
     display: block;
 }
-.item > .hover-bg .title {
+.section-3 .ssc-item > .hover-bg .title {
     font-weight: 400;
     color: #fff;
 }
-.item > .hover-bg .desc {}
-.item > .hover-bg .desc p {
+.section-3 .ssc-item > .hover-bg .desc {}
+.section-3 .ssc-item > .hover-bg .desc p {
     color: #fff;
 }
 
 /* 포트폴리오 별 이미지 */
-.item.tuttoroom {
+.ssc-item.tuttoroom {
     background-image: url("../img/tuttoroom_main.png");
 }
-.item.tuttoroom .line {
+.ssc-item.tuttoroom .line {
     background-color: #00acbd;
 }
-.item.bookk {
+.ssc-item.bookk {
     background-image: url("../img/bookk_main.png");
 }
-.item.bookk .line {
+.ssc-item.bookk .line {
     background-color: #c33e38;
 }
-.item.laughingbeans {
+.ssc-item.laughingbeans {
     background-image: url("../img/laughingbean_main.png");
 }
-.item.laughingbeans .line {
+.ssc-item.laughingbeans .line {
     background-color: #78abea;
 }
-.item.ipoptv {
+.ssc-item.ipoptv {
     background-image: url("../img/ipoptv_main.png");
 }
-.item.ipoptv .line {
+.ssc-item.ipoptv .line {
     background-color: #fff;
 }
-.item.moruwa {
+.ssc-item.moruwa {
     background-image: url("../img/moruwa_main.png");
 }
-.item.moruwa .line {
+.ssc-item.moruwa .line {
     background-color: #bebebe;
 }
 
-.item.peoplefund {
+.ssc-item.peoplefund {
     background-image: url("../img/peoplefund_main.png");
 }
-.item.peoplefund .line {
+.ssc-item.peoplefund .line {
     background-color: #032d57;
 }

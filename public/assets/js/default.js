@@ -41,10 +41,12 @@ window.onload = function() {
 $(function() {
 
     var $menu = $(".menu"),
-        $main = $(".main");
-
+        $main = $(".main"),
+        $window_width = $(window).width(),
+        $body = $("body");
 
     if($main.length > 0 && $main.hasClass("intro_page")) {
+
 
         // 인트로 메인 페이지의 원페이지 스크롤 라이브러리 적용
         $main.onepage_scroll({
@@ -101,7 +103,14 @@ $(function() {
 
         $menu.find("a").eq($main.find(".section.active").index()).addClass("active");
 
+    }
 
+    if($window_width <= 767) {
+        $("#owl-carousel").owlCarousel({
+            loop:false,
+            margin:10,
+            nav:true
+        });
     }
 
 
@@ -170,6 +179,5 @@ $(function() {
 
         }
     });
-
 
 });

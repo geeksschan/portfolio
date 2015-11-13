@@ -1,0 +1,24 @@
+*, :after, :before {
+    box-sizing: border-box;
+}
+.timeline {
+    position: relative;
+    padding-bottom: 30px;
+    margin-bottom: 20px;
+}
+
+.timeline:before {
+    width: 4px;
+    top: 0;
+    margin-left: -2px;
+}
+
+.timeline:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 100px;
+    /*left: 30px;*/
+    bottom: 0;
+    background-color: #ddd;
+}
