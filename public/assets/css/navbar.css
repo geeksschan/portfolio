@@ -14,6 +14,9 @@ div {
     height: 100%;
     z-index: 2000;
     top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background-color:#2C3E50;
     transition: height 1s, top 2s;
     -webkit-transition: height 1s, top 2s;
@@ -47,10 +50,10 @@ div {
 }
 
 body {
-    /*overflow: auto;*/
+    overflow: auto;
 }
 body.loading {
-    /*overflow-y: hidden;*/
+    overflow-y: hidden;
 }
 
 #ssc-navbar-backdrop {

@@ -1,6 +1,7 @@
 window.onload = function() {
 
-    var $body = $("body"),
+    var $html = $("html"),
+        $body = $("body"),
         $window = $(window),
         $window_width = $window.width(),
         $window_height = $window.height(),
