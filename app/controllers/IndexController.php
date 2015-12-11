@@ -14,6 +14,9 @@ class IndexController  extends ControllerBase
 
     public function indexAction()
     {
+        $this->assets->addCss("assets/css/onepage-scroll.css");
+//        $this->assets->addCss("assets/css/navbar.css");
+
         $this->assets->addCss("assets/css/owl.carousel.css");
         $this->assets->addCss("assets/css/owl.theme.css");
         $this->assets->addCss("assets/css/owl.transitions.css");

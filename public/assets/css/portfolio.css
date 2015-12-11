@@ -1,24 +1,162 @@
-*, :after, :before {
+*, :before, :after {
     box-sizing: border-box;
 }
-.timeline {
+
+.tl-wrapper {
     position: relative;
-    padding-bottom: 30px;
-    margin-bottom: 20px;
+    width: 100%;
+    padding: 50px 20px;
+    background-color: #fff;
 }
 
-.timeline:before {
-    width: 4px;
-    top: 0;
-    margin-left: -2px;
-}
-
-.timeline:before {
-    content: "";
+.tl-content {
+    position: relative;
     display: block;
+}
+
+.tl-content:before {
+    content: "";
     position: absolute;
-    left: 100px;
-    /*left: 30px;*/
+    display: block;
+    width: 4px;
+    top:0;
+    left: 30px;
     bottom: 0;
     background-color: #ddd;
+}
+
+.tl-header {
+    position: relative;
+    display: block;
+    width: 140px;
+    margin-bottom: 40px;
+    padding: 8px 0;
+    text-align: center;
+    background-color: #1d89cf;
+    border-radius: 2px;
+    color: #fff;
+    box-shadow: 0 0 0 4px #f6f6f6;
+}
+
+.tl-header.now {
+    background-color: #034F84;
+}
+
+.tl-item {
+    position: relative;
+    margin-left: 40px;
+    margin-bottom: 40px;
+    padding-left: 34px;
+}
+
+.tl-icon {
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 40px;
+    top: 4px;
+    left: -28px;
+    line-height: 45px;
+    border-radius: 50%;
+    background-color: #00acbd;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 0 0 4px #f6f6f6;
+}
+
+.tl-item.tuttoroom .tl-icon {
+    background-color: #00acbd;
+}
+.tl-item.bookk .tl-icon {
+    background-color: #c33e38;
+}
+.tl-item.laughingbeans .tl-icon {
+    background-color: #78abea;
+}
+
+.tl-body {
+    position: relative;
+    display: block;
+    min-height: 300px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+.tl-body:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-right: 9px solid #ddd;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid transparent;
+    top: 15px;
+    left: -19px;
+    right: auto;
+}
+.tl-body:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-right: 8px solid #fff;
+    border-bottom: 9px solid transparent;
+    border-left: 9px solid transparent;
+    top:16px;
+    left: -17px;
+    right: auto;
+}
+
+.tl-body > h3.title {
+    margin: 0;
+    padding: 16px 20px 15px;
+    font-size: 16px;
+}
+
+.tl-body > .tl-media {
+    padding: 20px;
+    background-color: #f1f1f1;
+}
+.tl-body > .tl-media > .tl-img {
+    max-width: 500px;
+    height: 200px;
+    margin: 0 auto;
+    background-image: url("../img/drawing.jpg");
+    background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.tl-item.tuttoroom .tl-body > .tl-media > .tl-img {
+    background-image: url("../img/tuttoroom_main.png");
+}
+.tl-item.bookk .tl-body > .tl-media > .tl-img {
+    background-image: url("../img/bookk_main.png");
+}
+.tl-item.laughingbeans .tl-body > .tl-media > .tl-img {
+    background-image: url("../img/laughingbean_main.png");
+}
+
+
+
+.tl-desc {
+    padding: 15px 20px;
+    font-size: 14px;
+}
+.tl-desc table tbody td {
+    padding-bottom: 5px;
+    vertical-align: top;
+}
+.tl-desc table tbody td.th {
+    width: 20%;
+    padding-right: 5px;
+}
+.tl-desc table tbody tr.last td {
+    padding-bottom: 0;
 }
