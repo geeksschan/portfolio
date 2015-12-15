@@ -1,0 +1,9 @@
+.note-editor.panel {
+    border-color: #ddd;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.note-editor.note-frame .note-editing-area .note-editable {
+    padding: 20px;
+}

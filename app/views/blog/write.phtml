@@ -1,0 +1,32 @@
+<?php
+/**
+ * @var $post_id int
+ * @var $post_content string
+ * @var $post_title string
+ * @var $post_sub_title string
+ */
+?>
+
+<div class="write-wrapper">
+    <form method="post" action="" id="post-write-form" role="form">
+        <input type="hidden" class="post-id" value="<?php echo $post_id; ?>" />
+        <input type="hidden" class="post-content" name="post_content" value="<?php echo $post_content; ?>" />
+        <div class="title-info">
+            <div class="ssc-form-group">
+                <label class="ssc-sr-only">제목</label>
+                <input type="text" id="post-title" class="ssc-form-control" name="post_title" placeholder="제목을 입력하세요." value="<?php echo $post_title; ?>" />
+            </div>
+            <div class="ssc-form-group">
+                <label class="ssc-sr-only">부제목</label>
+                <input type="text" id="post-sub-title" class="ssc-form-control" name="post_sub_title" placeholder="부제목을 입력하세요." value="<?php echo $post_sub_title; ?>" />
+            </div>
+        </div>
+
+        <div id="summernote">Hello Summernote</div>
+        <div class="submit-btn-wrapper ssc-clearfix">
+            <button type="submit" class="ssc-btn btn-save">저장</button>
+            <button type="button" class="ssc-btn btn-draft">발행</button>
+        </div>
+    </form>
+</div>
+

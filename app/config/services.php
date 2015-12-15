@@ -93,7 +93,8 @@ $di->set('session', function () {
  */
 $di->set('router', function () {
     $router = new \Phalcon\Mvc\Router();
-
+    $router->add("/blog/write", "Blog::write");
+    $router->add("/blog/write/{post_id}", "Blog::write");
     return $router;
 });
 
