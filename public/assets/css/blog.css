@@ -6,11 +6,11 @@ body {
     background-color: #f1f1f1;
 }
 
-.board {
+.blog {
     position: relative;
     height: 100%
 }
-#board-backdrop {
+#blog-backdrop {
     display: none;
     content: "";
     position: fixed;
@@ -24,11 +24,11 @@ body {
     -o-transition: all .4s ease-out;
     transition: all .4s ease-out;
 }
-#board-backdrop.open {
+#blog-backdrop.open {
     display: block;
 }
 
-#board-sidebar {
+#blog-sidebar {
     position: fixed;
     top:0;
     left:0;
@@ -58,7 +58,7 @@ body {
     -webkit-animation-duration: 1s;
     z-index: 1010;
 }
-#board-sidebar.open {
+#blog-sidebar.open {
     margin-left: 0;
     transform: translate(0px, 0px);
     -ms-transform: translate(0px, 0px);
@@ -67,13 +67,13 @@ body {
     -moz-transform: translate(0px, 0px);
 }
 
-#board-sidebar .board-sidebar-content {
+#blog-sidebar .blog-sidebar-content {
     width: 100%;
 }
 
 /* 중간 기기들 (데스크탑, 992px 이상) */
 @media screen and (min-width: 992px) {
-    #board-sidebar {
+    #blog-sidebar {
         position: relative;
         display: block;
         width: 30%;
@@ -90,7 +90,7 @@ body {
         -moz-transform: translate(0px, 0px);
         overflow: hidden;
     }
-    .board:before {
+    .blog:before {
         content: "";
         display: block;
         position: fixed;
@@ -107,56 +107,56 @@ body {
     }
 }
 
-#board-sidebar ul {
+#blog-sidebar ul {
     margin: 0;
     padding: 0;
     padding-top: 15px;
     list-style: none;
 }
-#board-sidebar ul > li {
+#blog-sidebar ul > li {
     margin-bottom: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
 }
-#board-sidebar ul > li > a {
+#blog-sidebar ul > li > a {
     font-size: 18x;
     color: #3d3d3d;
     text-decoration: none;
 }
-#board-sidebar ul > li:hover a {
+#blog-sidebar ul > li:hover a {
     color: #9896A4;
 }
 
 
-#board-sidebar .board-header {
+#blog-sidebar .blog-header {
     margin: 0;
     padding: 30px;
 }
-#board-sidebar .board-header .title {
+#blog-sidebar .blog-header .title {
     margin: 0;
 }
-#board-sidebar .board-header .desc {
+#blog-sidebar .blog-header .desc {
     color: #9896A4;
     font-weight: 400;
 }
 /* 중간 기기들 (데스크탑, 992px 이상) */
 @media screen and (min-width: 992px) {
-    #board-sidebar .board-header {
+    #blog-sidebar .blog-header {
         padding: 50px;
     }
 }
 
-#board-body {
+#blog-body {
     position: relative;;
     display: block;
     width: 100%;
     height: 100%;
-    padding-top: 46px;
+    padding-top: 50px;
     float: left;
 }
 /* 중간 기기들 (데스크탑, 992px 이상) */
 @media screen and (min-width: 992px) {
-    #board-body {
+    #blog-body {
         width: 70%;
         padding-top: 50px;
         float: none;
@@ -164,13 +164,13 @@ body {
     }
 }
 
-#board-search {
+#blog-search {
     padding-right: 30px;
     padding-left: 30px;
 }
 /* 중간 기기들 (데스크탑, 992px 이상) */
 @media screen and (min-width: 992px) {
-    #board-search {
+    #blog-search {
         padding-right: 50px;
         padding-left: 50px;
     }
@@ -193,20 +193,20 @@ body {
     border-radius: 4px;
 }
 
-#board-sidebar .section {
+#blog-sidebar .section {
     padding: 30px;
 }
 /* 중간 기기들 (데스크탑, 992px 이상) */
 @media screen and (min-width: 992px) {
-    #board-sidebar .section {
+    #blog-sidebar .section {
         padding: 50px;
     }
 }
-#board-sidebar .section .title {
+#blog-sidebar .section .title {
     margin-top: 15px;
     margin-bottom: 15px;
 }
-#board-sidebar .section ul li a {
+#blog-sidebar .section ul li a {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -262,7 +262,7 @@ body {
     /*width: 50px;*/
 }
 
-.board-sidebar-btn {
+.blog-sidebar-btn {
     position: fixed;
     width: 50px;
     padding: 13px;
@@ -287,7 +287,7 @@ body {
     transition: all .1s ease-out;
 }
 
-.board-sidebar-btn span {
+.blog-sidebar-btn span {
     display: block;
     width: 22px;
     height: 3px;
@@ -295,22 +295,22 @@ body {
     background-color: #6d6d6d;
     opacity: 1;
 }
-.board-sidebar-btn span + span {
+.blog-sidebar-btn span + span {
     margin-top: 5px;
 }
 
 /* 중간 기기들 (데스크탑, 992px 이상) */
 @media screen and (min-width: 992px) {
-    .board-sidebar-btn {
+    .blog-sidebar-btn {
         display: none;
     }
 }
 
-.board-sidebar-btn .light {
+.blog-sidebar-btn .light {
 
 }
 
-.board-sidebar-btn.open {
+.blog-sidebar-btn.open {
     width: 50px;
     height: 50px;
     border-bottom: 1px solid #eee;
@@ -327,12 +327,12 @@ body {
     transition-delay: .1s;
     /*border: 1px solid transparent;*/
 }
-.board-sidebar-btn span {
+.blog-sidebar-btn span {
     -webkit-transition: all .5s ease-out;
     -o-transition: all .5s ease-out;
     transition: all .5s ease-out;
 }
-.board-sidebar-btn.open .close-lt {
+.blog-sidebar-btn.open .close-lt {
     position: absolute;
     transform: rotate(45deg);
     -ms-transform: rotate(45deg);
@@ -340,10 +340,10 @@ body {
     -webkit-transform: rotate(45deg);
     top: 20px;
 }
-.board-sidebar-btn.open .close-no {
+.blog-sidebar-btn.open .close-no {
     display: none;
 }
-.board-sidebar-btn.open .close-rt {
+.blog-sidebar-btn.open .close-rt {
     position: absolute;
     transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
@@ -352,46 +352,46 @@ body {
     top: 15px;
 }
 
-.board-list {
+.blog-list {
     position:relative;
     padding: 20px;
 }
 /* 중간 기기들 (데스크탑, 992px 이상) */
 @media screen and (min-width: 992px) {
-    .board-list {
+    .blog-list {
         padding: 50px;
     }
 }
-.board-item {
+.blog-item {
     position: relative;
     margin-bottom: 50px;
     padding: 20px 20px 0 20px;
     background-color: #fff;
 }
-.board-item .item-header h2 {
+.blog-item .item-header h2 {
     font-size: 20px;
 }
-.board-item .item-body {
+.blog-item .item-body {
     padding: 20px 0;
 }
-.board-item .item-body ol,.board-item .item-body ul {
+.blog-item .item-body ol,.blog-item .item-body ul {
     padding-left: 26px;
 }
-.board-item .item-body .img-wrapper {
+.blog-item .item-body .img-wrapper {
     margin-left: -20px;
     margin-right: -20px;
     padding-bottom: 10px;
 }
-.board-item .item-body .img-wrapper img {
+.blog-item .item-body .img-wrapper img {
     width: 100%;
 }
-.board-item .item-body .img-wrapper p {
+.blog-item .item-body .img-wrapper p {
     margin-top: 5px;
     margin-bottom: 5px;
     text-align: center;
     font-size: 12px;
 }
-.board-item .item-body p {
+.blog-item .item-body p {
     margin-top: 8px;
     margin-bottom: 8px;
     font-size: 14px;
@@ -399,7 +399,7 @@ body {
     word-break: keep-all;
 }
 
-.board-item .item-footer {
+.blog-item .item-footer {
     margin-left: -20px;
     margin-right: -20px;
     padding-left: 20px;
@@ -410,25 +410,25 @@ body {
 }
 /* 중간 기기들 (데스크탑, 992px 이상) */
 @media screen and (min-width: 992px) {
-    .board-item {
+    .blog-item {
         padding: 50px 50px 0 50px;
     }
-    .board-item .item-header h2 {
+    .blog-item .item-header h2 {
         font-size: 26px;
     }
-    .board-item .item-body .img-wrapper {
+    .blog-item .item-body .img-wrapper {
         margin-left: -50px;
         margin-right: -50px;
     }
-    .board-item .item-body ol,.board-item .item-body ul {
+    .blog-item .item-body ol,.blog-item .item-body ul {
         padding-left: 30px;
     }
-    .board-item .item-body .img-wrapper p {
+    .blog-item .item-body .img-wrapper p {
         margin-top: 10px;
         margin-bottom: 10px;
         font-size: 14px;
     }
-    .board-item .item-body p {
+    .blog-item .item-body p {
         margin-top: 15px;
         margin-bottom: 15px;
         font-size: 16px;
@@ -436,7 +436,7 @@ body {
         word-break: keep-all;
     }
 
-    .board-item .item-footer {
+    .blog-item .item-footer {
         margin-left: -50px;
         margin-right: -50px;
         padding-left: 50px;
