@@ -10,6 +10,7 @@ $(function() {
         $board_sideber_btn = $(".board-sidebar-btn"),
         $board_body = $("#board-body"),
         $board_list = $board_body.find(".board-list"),
+        $blog_content = $board_body.find(".blog-content"),
         $board_list_height = $board_list.height(),
         $window_sidebar_gap = $board_sidebar_content_height - $window_height, // 사이드 메뉴 높이가 윈도우 창 보다 높은지 여부
         $board_backdrop = $("#board-backdrop"),
@@ -86,6 +87,9 @@ $(function() {
      * 메뉴 사이드 바 열림/닫기 버튼
      */
     $board_sideber_btn.on("click", function() {
+
+        var fixed_top_plus = parseInt($board_sidebar_btn_wrapper.height());
+
         // 닫기
         if($(this).hasClass("open")) {
             if($submit_btn_wrapper.length > 0) {
@@ -97,14 +101,14 @@ $(function() {
             $board_sidebar.removeClass("open");
             $board_backdrop.removeClass("open");
 
-            fixed_top -= 47;
+            fixed_top -= fixed_top_plus;
             if(fixed_top >= 0) {
                 fixed_top = 0;
             } else {
                 fixed_top *= -1;
             }
 
-            $board_list.css("position", "relative").css("top","inherit");
+            $blog_content.css("position", "relative").css("top","inherit");
             $(window).scrollTop(fixed_top);
 
         } else {
@@ -117,8 +121,8 @@ $(function() {
             $(this).addClass("open");
             $board_backdrop.addClass("open");
 
-            fixed_top = 47 - last_scroll_top;
-            $board_list.css("position", "fixed").css("top", fixed_top+"px");
+            fixed_top = fixed_top_plus - last_scroll_top;
+            $blog_content.css("position", "fixed").css("top", fixed_top+"px");
         }
     });
 
@@ -141,7 +145,7 @@ $(function() {
 
             $summernote.summernote({
                 lang: 'ko-KR',
-                height: $summernote_initial_height,
+                height: "100%",
                 minHeight: null,
                 maxHeight: null,
                 focus: true
