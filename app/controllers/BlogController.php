@@ -64,17 +64,27 @@ class BlogController  extends ControllerBase
         if($this->request->isPost()) {
 
             if($post_id and $post) {
+
                 $post_title = $this->request->getPost("post_title");
                 $post_sub_title = $this->request->getPost("post_sub_title");
                 $post_content = $this->request->getPost("post_content");
+
+                $this->db->begin();
+                $prev_file_delete_result = Post::deletePrevFiles($post_id, $post_content);
+                if(!$prev_file_delete_result) {
+                    $this->db->rollback();
+                    return $this->responseJsonFailure("이전 이미지 파일 삭제 에러");
+                }
 
                 $post->title = $post_title;
                 $post->sub_title = $post_sub_title;
                 $post->content = $post_content;
 
                 if(!$post->save()) {
+                    $this->db->rollback();
                     return $this->responseJsonFailure("저장 되지 않았습니다", $post->getMessages());
                 } else {
+                    $this->db->commit();
                     return $this->responseJsonSuccess("성공적으로 저장되었습니다");
                 }
 
@@ -86,7 +96,72 @@ class BlogController  extends ControllerBase
             return true;
         }
 
-
     }
+
+    public function uploadAction()
+    {
+//        if(!$this->logged_user) {
+//            return $this->responseJsonNotPermitted();
+//        }
+
+//        $data = array();
+//        $blog_id = $this->request->getPost("blog_id");
+//        $type = $this->request->getPost("type");
+
+//        $blog = Blog::findFirst("blog_id = {$blog_id}");
+//        if(!$blog) {
+//            return $this->responseJsonFailure(Lang::$msg_invalid_parameters);
+//        }
+
+//        if($blog->user_id != $this->logged_user->user_id) {
+//            return $this->responseJsonNotPermitted();
+//        }
+        $type = "post";
+
+        $post_id = $this->request->getPost("post_id", "int", 0);
+        if(!$post_id) {
+            return $this->responseJsonFailure("잘못된 파라미터 전달.");
+        }
+        $post = Post::findFirst($post_id);
+        if(!$post) {
+            return $this->responseJsonFailure("포스트가 존재하지 않습니다");
+        }
+
+        if($this->request->hasFiles()) {
+
+            $data = array();
+            foreach($this->request->getUploadedFiles() as $val) {
+                if($val->getSize()>0) {
+
+                    $file = File::upload($val, $type, $post_id);
+                    if($file) {
+                        if($type != 'file') {
+                            $object = new stdClass();
+                            $object->file_id = $file->file_id;
+                            $object->width = $file->width;
+                            $object->height = $file->height;
+                            $object->file_name = $file->file_name;
+                            if($file->file_type == 'image/gif') {
+                                $object->full_path = $file->getFileUrl();
+                            } else {
+                                $object->full_path = $file->getThumbnail(1080);
+                            }
+
+                            $data[] = $object;
+                        }
+                        else {
+                            $data[] = $file;
+                        }
+                    }
+                }
+            }
+            return $this->responseJsonSuccess("success", $data);
+        }
+        else {
+            return $this->responseJsonFailure("failed");
+        }
+    }
+
+
 
 }

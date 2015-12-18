@@ -133,7 +133,7 @@ body {
     padding: 30px;
 }
 #blog-sidebar .blog-header .title {
-    margin: 0;
+    margin: 0 0 10px 0;
 }
 #blog-sidebar .blog-header .desc {
     color: #9896A4;
@@ -338,7 +338,7 @@ body {
     -ms-transform: rotate(45deg);
     -o-transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
-    top: 20px;
+    top: 22px;
 }
 .blog-sidebar-btn.open .close-no {
     display: none;
@@ -349,7 +349,7 @@ body {
     -ms-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
-    top: 15px;
+    top: 17px;
 }
 
 .blog-list {
@@ -506,4 +506,10 @@ body {
 .submit-btn-wrapper.close {
     right: -125px;
     opacity: 0;
+}
+
+.post-content {
+    position: absolute;
+    top : -500px;
+    visibility: hidden;
 }

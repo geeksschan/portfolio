@@ -23,7 +23,12 @@ $(function() {
         $summernote_initial_height = 500,
         $submit_btn_wrapper = $(".submit-btn-wrapper"),
         $post_write_form = $("#post-write-form"),
-        $post_content_input = null;
+        $post_content_input = null,
+        $note_editor = null,
+        $note_editable = null,
+        note_editable_img_count = 0,
+        editable_img_loaded_count = 0,
+        editable_img_loaded = false;
 
 
     $window.resize(function() {
@@ -136,23 +141,105 @@ $(function() {
      */
     if($post_write_form.length > 0) {
 
-        $post_content_input = $post_write_form.find("input[name='post_content']");
+        $post_content_input = $post_write_form.find("[name='post_content']");
 
         if($summernote.length > 0) {
+            /**
+             * summernote 이미지 업로드
+             * @param file
+             * @param editor
+             * @param welEditable
+             */
+            function sendFile(file,editor,welEditable) {
+                $post_write_form.ajaxSubmit({
+                    dataType: 'json',
+                    url: "/blog/upload",
+                    type: 'post',
+                    cache: false,
+                    iframe: true,
+                    target: '#hidden-iframe',
+                    success: function(json) {
+                        if(json.status == "success") {
+                            alert(json.message);
+                            $summernote.summernote('insertImage', json.data[0].full_path, json.data[0].file_name, json.data[0].file_id);
+                            //location.href = json.success_return_url;
+                        }
+                        else if(json.status == "failure") {
+                            alert(json.message);
+                        }
+                    },
+                    error: function() {
+                        alert("error");
+                    },
+                    complete: function() {
+
+                    }
+                });
+            }
+
+            /**
+             * summernote code의 높이 값 얻음
+             * @param $note_editable
+             * @returns {number}
+             */
+            function getSummernoteHeight($note_editable) {
+                var p_height = 0;
+                $note_editable.find("p").each(function() {
+                    p_height += $(this).outerHeight();
+                });
+                return p_height;
+            }
+
+            /**
+             * summernote의 에디터 부분의 높이값 설정
+             * @param $note_editable
+             * @param init_plus_height
+             */
+            function setSummernoteHeight($note_editable, init_plus_height) {
+                var set_height = getSummernoteHeight($note_editable);
+                if(set_height > 0) {
+                    init_plus_height = (typeof init_plus_height == "undefined")?0:init_plus_height;
+                    set_height += init_plus_height;
+                    $note_editable.height(set_height);
+                }
+            }
+
             if($window_width < 767) {
                 $summernote_initial_height = 300;
             }
 
             $summernote.summernote({
+                //airMode: true,
                 lang: 'ko-KR',
-                height: "100%",
-                minHeight: null,
-                maxHeight: null,
-                focus: true
+                height: $summernote_initial_height,
+                minHeight: "100%",
+                maxHeight: "100%",
+                focus: true,
+                callbacks : {
+                    //onInit: function() {
+                    //
+                    //},
+                    onImageUpload : function(files, editor, welEditable) {
+                        sendFile(files[0], editor, welEditable);
+                    },
+                    onChange: function(contents, $editable) {
+                        console.log('onChange:', contents, $editable);
+                    }
+                }
             });
 
             $summernote.summernote("code", $post_content_input.val());
 
+            $note_editor = $(".note-editor");
+            $note_editable = $note_editor.find(".note-editable");
+
+            note_editable_img_count = $note_editable.find("p img").length;
+            $note_editable.find("p img").on("load", function() {
+                editable_img_loaded_count++;
+                if(note_editable_img_count == editable_img_loaded_count) {
+                    setSummernoteHeight($note_editable, 40);
+                }
+            });
         }
 
         $post_write_form.submit(function() {
@@ -169,6 +256,7 @@ $(function() {
                 success: function(json) {
                     if(json.status == "success") {
                         alert(json.message);
+                        console.log(json.data);
                         //location.href = json.success_return_url;
                     }
                     else if(json.status == "failure") {
@@ -184,6 +272,8 @@ $(function() {
             });
             return false;
         });
+
+
     }
 
 

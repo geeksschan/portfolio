@@ -44,7 +44,76 @@ class Post extends ModelBase
         return $post;
     }
 
+    /**
+     * 포스트 삭제된 파일 정리
+     * @param int $post_id
+     * @param string $content
+     * @param string $prev_content
+     * @return bool
+     */
+    public static function deletePrevFiles($post_id=0, $content) {
 
+        if($post_id) {
+
+            $current_file_count = preg_match_all("/<img\s+.*?src=[\"\']([^\"\']+)[\"\'\s][^>]*>/is", $content, $new_content_files);
+
+            $current_file_ids = array();
+            if($current_file_count > 0) {
+                foreach($new_content_files[0] as $f_val) {
+                    preg_match_all('/data-file-id\=[\'\"]?([0-9]+)+[\'\"]?/i', $f_val, $current_file);
+                    $current_file_ids[] = $current_file[1][0];
+                }
+            }
+
+            $prev_content_files = array();
+            $prev_file_ids = array();
+            $prev_files = File::find("target = 'post' and target_id = {$post_id}");
+            $prev_file_count = count($prev_files);
+
+            if($prev_file_count > 0) {
+                foreach($prev_files as $val) {
+                    $prev_file_ids[] = $val->file_id;
+                }
+                $prev_content_files[0] = 1;
+                $prev_content_files[1] = $prev_file_ids;
+
+                $delete_file_ids = array();
+
+                if($current_file_count > 0) {
+                    foreach($prev_file_ids as $val) {
+                        if(!in_array($val, $current_file_ids)) {
+                            $delete_file_ids[] = $val;
+                        }
+                    }
+                } else {
+                    foreach($prev_file_ids as $val) {
+                        $delete_file_ids[] = $val;
+                    }
+                }
+
+                if(count($delete_file_ids)>0) {
+                    $delete_file_ids = implode(",", $delete_file_ids);
+                    $delete_files = File::find(array(
+                        "conditions" => "target = 'post' and target_id = {$post_id} and file_id IN ({$delete_file_ids})"
+                    ));
+
+                    if(count($delete_files) > 0) {
+                        foreach($delete_files as $delete_val) {
+                            if(!$delete_val->delete()) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
+
+        } else {
+            return false;
+        }
+
+    }
 
 
     public function getName() {

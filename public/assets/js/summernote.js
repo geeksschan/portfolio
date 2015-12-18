@@ -1,12 +1,12 @@
 /**
- * Super simple wysiwyg editor v0.7.0
+ * Super simple wysiwyg editor v0.7.1
  * http://summernote.org/
  *
  * summernote.js
  * Copyright 2013-2015 Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license./
  *
- * Date: 2015-12-02T16:01Z
+ * Date: 2015-12-10T08:15Z
  */
 (function (factory) {
   /* global define */
@@ -21,7 +21,7 @@
     factory(window.jQuery);
   }
 }(function ($) {
-  
+
 
 
   /**
@@ -131,8 +131,8 @@
     var namespaceToCamel = function (namespace, prefix) {
       prefix = prefix || '';
       return prefix + namespace.split('.').map(function (name) {
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
-      }).join('');
+            return name.substring(0, 1).toUpperCase() + name.substring(1);
+          }).join('');
     };
 
     return {
@@ -246,7 +246,7 @@
         return memo + fn(v);
       }, 0);
     };
-  
+
     /**
      * returns a copy of the collection with array type.
      * @param {Collection} collection - collection eg) node.childNodes, ...
@@ -265,7 +265,7 @@
     var isEmpty = function (array) {
       return !array || !array.length;
     };
-  
+
     /**
      * cluster elements by predicate function.
      *
@@ -286,7 +286,7 @@
         return memo;
       }, [[head(array)]]);
     };
-  
+
     /**
      * returns a copy of the array with all falsy values removed
      *
@@ -341,9 +341,9 @@
     };
 
     return { head: head, last: last, initial: initial, tail: tail,
-             prev: prev, next: next, find: find, contains: contains,
-             all: all, sum: sum, from: from, isEmpty: isEmpty,
-             clusterBy: clusterBy, compact: compact, unique: unique };
+      prev: prev, next: next, find: find, contains: contains,
+      all: all, sum: sum, from: from, isEmpty: isEmpty,
+      clusterBy: clusterBy, compact: compact, unique: unique };
   })();
 
   var isSupportAmd = typeof define === 'function' && define.amd;
@@ -402,7 +402,7 @@
     browserVersion: browserVersion,
     jqueryVersion: parseFloat($.fn.jquery),
     isSupportAmd: isSupportAmd,
-    hasCodeMirror: isSupportAmd ? require.specified('CodeMirror') : !!window.CodeMirror,
+    hasCodeMirror: isSupportAmd ? require.specified('codemirror') : !!window.CodeMirror,
     isFontInstalled: isFontInstalled,
     isW3CRangeSupport: !!document.createRange
   };
@@ -504,6 +504,8 @@
       return node && /^H[1-7]/.test(node.nodeName.toUpperCase());
     };
 
+    var isPre = makePredByNodeName('PRE');
+
     var isLi = makePredByNodeName('LI');
 
     var isPurePara = function (node) {
@@ -514,11 +516,11 @@
 
     var isInline = function (node) {
       return !isBodyContainer(node) &&
-             !isList(node) &&
-             !isHr(node) &&
-             !isPara(node) &&
-             !isTable(node) &&
-             !isBlockquote(node);
+          !isList(node) &&
+          !isHr(node) &&
+          !isPara(node) &&
+          !isTable(node) &&
+          !isBlockquote(node);
     };
 
     var isList = function (node) {
@@ -558,7 +560,7 @@
      */
     var isClosestSibling = function (nodeA, nodeB) {
       return nodeA.nextSibling === nodeB ||
-             nodeA.previousSibling === nodeB;
+          nodeA.previousSibling === nodeB;
     };
 
     /**
@@ -995,7 +997,7 @@
 
     /**
      * returns whether point is visible (can set cursor) or not.
-     * 
+     *
      * @param {BoundaryPoint} point
      * @return {Boolean}
      */
@@ -1085,8 +1087,8 @@
         }
 
         var isSkipOffset = isSkipInnerOffset &&
-                           startPoint.node !== point.node &&
-                           endPoint.node !== point.node;
+            startPoint.node !== point.node &&
+            endPoint.node !== point.node;
         point = nextPoint(point, isSkipOffset);
       }
     };
@@ -1225,9 +1227,9 @@
 
       // if splitRoot is exists, split with splitTree
       var pivot = splitRoot && splitTree(splitRoot, point, {
-        isSkipPaddingBlankHTML: isInline,
-        isNotSplitEdgePoint: isInline
-      });
+            isSkipPaddingBlankHTML: isInline,
+            isNotSplitEdgePoint: isInline
+          });
 
       // if container is point.node, find pivot with point.offset
       if (!pivot && container === point.node) {
@@ -1351,7 +1353,7 @@
         markup = markup.replace(regexTag, function (match, endSlash, name) {
           name = name.toUpperCase();
           var isEndOfInlineContainer = /^DIV|^TD|^TH|^P|^LI|^H[1-7]/.test(name) &&
-                                       !!endSlash;
+              !!endSlash;
           var isBlockNode = /^BLOCKQUOTE|^TABLE|^TBODY|^TR|^HR|^UL|^OL/.test(name);
 
           return match + ((isEndOfInlineContainer || isBlockNode) ? '\n' : '');
@@ -1408,6 +1410,7 @@
       isBodyInline: isBodyInline,
       isBody: isBody,
       isParaInline: isParaInline,
+      isPre: isPre,
       isList: isList,
       isTable: isTable,
       isCell: isCell,
@@ -1543,6 +1546,24 @@
       }
     };
 
+    this.isDisabled = function () {
+      return this.layoutInfo.editable.attr('contenteditable') === 'false';
+    };
+
+    this.enable = function () {
+      this.layoutInfo.editable.attr('contenteditable', true);
+      this.invoke('toolbar.activate', true);
+    };
+
+    this.disable = function () {
+      // close codeview if codeview is opend
+      if (this.invoke('codeview.isActivated')) {
+        this.invoke('codeview.deactivate');
+      }
+      this.layoutInfo.editable.attr('contenteditable', false);
+      this.invoke('toolbar.deactivate', true);
+    };
+
     this.triggerEvent = function () {
       var namespace = list.head(arguments);
       var args = list.tail(list.from(arguments));
@@ -1644,8 +1665,8 @@
   };
 
   $.summernote = $.summernote || {
-    lang: {}
-  };
+        lang: {}
+      };
 
   $.fn.extend({
     /**
@@ -1667,8 +1688,9 @@
       this.each(function (idx, note) {
         var $note = $(note);
         if (!$note.data('summernote')) {
-          $note.data('summernote', new Context($note, options));
-          $note.data('summernote').triggerEvent('init');
+          var context = new Context($note, options);
+          $note.data('summernote', context);
+          $note.data('summernote').triggerEvent('init', context.layoutInfo);
         }
       });
 
@@ -1820,14 +1842,14 @@
       '<div class="modal-dialog">',
       '  <div class="modal-content">',
       (options.title ?
-      '    <div class="modal-header">' +
-      '      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-      '      <h4 class="modal-title">' + options.title + '</h4>' +
-      '    </div>' : ''
+          '    <div class="modal-header">' +
+          '      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+          '      <h4 class="modal-title">' + options.title + '</h4>' +
+          '    </div>' : ''
       ),
       '    <div class="modal-body">' + options.body + '</div>',
       (options.footer ?
-      '    <div class="modal-footer">' + options.footer + '</div>' : ''
+          '    <div class="modal-footer">' + options.footer + '</div>' : ''
       ),
       '  </div>',
       '</div>'
@@ -2174,7 +2196,7 @@
      */
     var textRangeToPoint = function (textRange, isStart) {
       var container = textRange.parentElement(), offset;
-  
+
       var tester = document.body.createTextRange(), prevContainer;
       var childNodes = list.from(container.childNodes);
       for (offset = 0; offset < childNodes.length; offset++) {
@@ -2187,42 +2209,42 @@
         }
         prevContainer = childNodes[offset];
       }
-  
+
       if (offset !== 0 && dom.isText(childNodes[offset - 1])) {
         var textRangeStart = document.body.createTextRange(), curTextNode = null;
         textRangeStart.moveToElementText(prevContainer || container);
         textRangeStart.collapse(!prevContainer);
         curTextNode = prevContainer ? prevContainer.nextSibling : container.firstChild;
-  
+
         var pointTester = textRange.duplicate();
         pointTester.setEndPoint('StartToStart', textRangeStart);
         var textCount = pointTester.text.replace(/[\r\n]/g, '').length;
-  
+
         while (textCount > curTextNode.nodeValue.length && curTextNode.nextSibling) {
           textCount -= curTextNode.nodeValue.length;
           curTextNode = curTextNode.nextSibling;
         }
-  
+
         /* jshint ignore:start */
         var dummy = curTextNode.nodeValue; // enforce IE to re-reference curTextNode, hack
         /* jshint ignore:end */
-  
+
         if (isStart && curTextNode.nextSibling && dom.isText(curTextNode.nextSibling) &&
             textCount === curTextNode.nodeValue.length) {
           textCount -= curTextNode.nodeValue.length;
           curTextNode = curTextNode.nextSibling;
         }
-  
+
         container = curTextNode;
         offset = textCount;
       }
-  
+
       return {
         cont: container,
         offset: offset
       };
     };
-    
+
     /**
      * return TextRange from boundary point (inspired by google closure-library)
      * @param {BoundaryPoint} point
@@ -2231,7 +2253,7 @@
     var pointToTextRange = function (point) {
       var textRangeInfo = function (container, offset) {
         var node, isCollapseToStart;
-  
+
         if (dom.isText(container)) {
           var prevTextNodes = dom.listPrev(container, func.not(dom.isText));
           var prevContainer = list.last(prevTextNodes).previousSibling;
@@ -2243,27 +2265,27 @@
           if (dom.isText(node)) {
             return textRangeInfo(node, 0);
           }
-  
+
           offset = 0;
           isCollapseToStart = false;
         }
-  
+
         return {
           node: node,
           collapseToStart: isCollapseToStart,
           offset: offset
         };
       };
-  
+
       var textRange = document.body.createTextRange();
       var info = textRangeInfo(point.node, point.offset);
-  
+
       textRange.moveToElementText(info.node);
       textRange.collapse(info.collapseToStart);
       textRange.moveStart('character', info.offset);
       return textRange;
     };
-    
+
     /**
      * Wrapped Range
      *
@@ -2278,7 +2300,7 @@
       this.so = so;
       this.ec = ec;
       this.eo = eo;
-  
+
       // nativeRange: get nativeRange from sc, so, ec, eo
       var nativeRange = function () {
         if (agent.isW3CRangeSupport) {
@@ -2339,7 +2361,7 @@
         } else {
           nativeRng.select();
         }
-        
+
         return this;
       };
 
@@ -2375,7 +2397,7 @@
           }
 
           var nextPoint = isLeftToRight ? dom.nextPointUntil(dom.nextPoint(point), dom.isVisiblePoint) :
-                                          dom.prevPointUntil(dom.prevPoint(point), dom.isVisiblePoint);
+              dom.prevPointUntil(dom.prevPoint(point), dom.isVisiblePoint);
           return nextPoint || point;
         };
 
@@ -2383,10 +2405,10 @@
         var startPoint = this.isCollapsed() ? endPoint : getVisiblePoint(this.getStartPoint(), true);
 
         return new WrappedRange(
-          startPoint.node,
-          startPoint.offset,
-          endPoint.node,
-          endPoint.offset
+            startPoint.node,
+            startPoint.offset,
+            endPoint.node,
+            endPoint.offset
         );
       };
 
@@ -2474,10 +2496,10 @@
         }
 
         return new WrappedRange(
-          boundaryPoints.sc,
-          boundaryPoints.so,
-          boundaryPoints.ec,
-          boundaryPoints.eo
+            boundaryPoints.sc,
+            boundaryPoints.so,
+            boundaryPoints.ec,
+            boundaryPoints.eo
         );
       };
 
@@ -2515,10 +2537,10 @@
         }
 
         return new WrappedRange(
-          boundaryPoints.sc,
-          boundaryPoints.so,
-          boundaryPoints.ec,
-          boundaryPoints.eo
+            boundaryPoints.sc,
+            boundaryPoints.so,
+            boundaryPoints.ec,
+            boundaryPoints.eo
         );
       };
 
@@ -2557,13 +2579,13 @@
         });
 
         return new WrappedRange(
-          point.node,
-          point.offset,
-          point.node,
-          point.offset
+            point.node,
+            point.offset,
+            point.node,
+            point.offset
         ).normalize();
       };
-      
+
       /**
        * makeIsOn: return isOn(pred) function
        */
@@ -2573,7 +2595,7 @@
           return !!ancestor && (ancestor === dom.ancestor(ec, pred));
         };
       };
-  
+
       // isOnEditable: judge whether range is on editable or not
       this.isOnEditable = makeIsOn(dom.isEditable);
       // isOnList: judge whether range is on list node or not
@@ -2681,7 +2703,7 @@
           return rng.insertNode(childNode);
         }).reverse();
       };
-  
+
       /**
        * returns text in range
        *
@@ -2716,13 +2738,13 @@
         }
 
         return new WrappedRange(
-          startPoint.node,
-          startPoint.offset,
-          endPoint.node,
-          endPoint.offset
+            startPoint.node,
+            startPoint.offset,
+            endPoint.node,
+            endPoint.offset
         );
       };
-  
+
       /**
        * create offsetPath bookmark
        *
@@ -2769,22 +2791,22 @@
       };
     };
 
-  /**
-   * @class core.range
-   *
-   * Data structure
-   *  * BoundaryPoint: a point of dom tree
-   *  * BoundaryPoints: two boundaryPoints corresponding to the start and the end of the Range
-   *
-   * See to http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level-2-Range-Position
-   *
-   * @singleton
-   * @alternateClassName range
-   */
+    /**
+     * @class core.range
+     *
+     * Data structure
+     *  * BoundaryPoint: a point of dom tree
+     *  * BoundaryPoints: two boundaryPoints corresponding to the start and the end of the Range
+     *
+     * See to http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level-2-Range-Position
+     *
+     * @singleton
+     * @alternateClassName range
+     */
     return {
       /**
        * @method
-       * 
+       *
        * create Range Object From arguments or Browser Selection
        *
        * @param {Node} sc - start container
@@ -2803,7 +2825,7 @@
               // Firefox: returns entire body as range on initialization. We won't never need it.
               return null;
             }
-  
+
             var nativeRng = selection.getRangeAt(0);
             sc = nativeRng.startContainer;
             so = nativeRng.startOffset;
@@ -2815,9 +2837,9 @@
             textRangeEnd.collapse(false);
             var textRangeStart = textRange;
             textRangeStart.collapse(true);
-  
+
             var startPoint = textRangeToPoint(textRangeStart, true),
-            endPoint = textRangeToPoint(textRangeEnd, false);
+                endPoint = textRangeToPoint(textRangeEnd, false);
 
             // same visible point case: range was collapsed.
             if (dom.isText(startPoint.node) && dom.isLeftEdgePoint(startPoint) &&
@@ -2839,8 +2861,8 @@
       },
 
       /**
-       * @method 
-       * 
+       * @method
+       *
        * create WrappedRange from node
        *
        * @param {Node} node
@@ -2889,8 +2911,8 @@
       },
 
       /**
-       * @method 
-       * 
+       * @method
+       *
        * create WrappedRange from bookmark
        *
        * @param {Node} editable
@@ -2906,7 +2928,7 @@
       },
 
       /**
-       * @method 
+       * @method
        *
        * create WrappedRange from paraBookmark
        *
@@ -2955,7 +2977,7 @@
         }).readAsDataURL(file);
       }).promise();
     };
-  
+
     /**
      * @method createImage
      *
@@ -2965,7 +2987,7 @@
      * @param {String} filename
      * @return {Promise} - then: $image
      */
-    var createImage = function (sUrl, filename) {
+    var createImage = function (sUrl, filename, file_id) {
       return $.Deferred(function (deferred) {
         var $img = $('<img>');
 
@@ -2979,7 +3001,8 @@
           display: 'none'
         }).appendTo(document.body).attr({
           'src': sUrl,
-          'data-filename': filename
+          'data-filename': filename,
+          'data-file-id' : file_id
         });
       }).promise();
     };
@@ -3020,10 +3043,10 @@
     };
 
     /**
-    * @method rewind
-    * Rewinds the history stack back to the first snapshot taken.
-    * Leaves the stack intact, so that "Redo" can still be used.
-    */
+     * @method rewind
+     * Rewinds the history stack back to the first snapshot taken.
+     * Leaves the stack intact, so that "Redo" can still be used.
+     */
     this.rewind = function () {
 
       // Create snap shot if not yet recorded
@@ -3041,9 +3064,9 @@
 
 
     /**
-    * @method reset
-    * Resets the history stack completely; reverting to an empty editor.
-    */
+     * @method reset
+     * Resets the history stack completely; reverting to an empty editor.
+     */
     this.reset = function () {
 
       // Clear the stack.
@@ -3371,7 +3394,7 @@
           wrappedParas = wrappedParas.concat(self.wrapList(paras, listName));
         });
         paras = wrappedParas;
-      // list to paragraph or change list style
+        // list to paragraph or change list style
       } else {
         var diffLists = rng.nodes(dom.isList, {
           includeAncestor: true
@@ -3438,7 +3461,7 @@
         var last = list.last(paras);
 
         var headList = isEscapseToBody ? dom.lastAncestor(head, dom.isList) :
-                                         head.parentNode;
+            head.parentNode;
         var lastList = headList.childNodes.length > 1 ? dom.splitTree(headList, {
           node: last.parentNode,
           offset: dom.position(last) + 1
@@ -3454,7 +3477,7 @@
         });
 
         paras = isEscapseToBody ? dom.listDescendant(middleList, dom.isLi) :
-                                  list.from(middleList.childNodes).filter(dom.isLi);
+            list.from(middleList.childNodes).filter(dom.isLi);
 
         // LI to P
         if (isEscapseToBody || !dom.isList(headList.parentNode)) {
@@ -3536,12 +3559,12 @@
           // toogle UL/OL and escape
           bullet.toggleList(splitRoot.parentNode.nodeName);
           return;
-        // if it is an empty line with para on blockquote
+          // if it is an empty line with para on blockquote
         } else if (dom.isEmpty(splitRoot) && dom.isPara(splitRoot) && dom.isBlockquote(splitRoot.parentNode)) {
           // escape blockquote
           dom.insertAfter(splitRoot, splitRoot.parentNode);
           nextPara = splitRoot;
-        // if new line has content (not a line break)
+          // if new line has content (not a line break)
         } else {
           nextPara = dom.splitTree(splitRoot, rng.getStartPoint());
 
@@ -3552,12 +3575,12 @@
             dom.remove(anchor);
           });
 
-          // replace empty heading with P tag
-          if (dom.isHeading(nextPara) && dom.isEmpty(nextPara)) {
+          // replace empty heading or pre with P tag
+          if ((dom.isHeading(nextPara) || dom.isPre(nextPara)) && dom.isEmpty(nextPara)) {
             nextPara = dom.replace(nextPara, 'p');
           }
         }
-      // no paragraph: insert empty paragraph
+        // no paragraph: insert empty paragraph
       } else {
         var next = rng.sc.childNodes[rng.so];
         nextPara = $(dom.emptyPara)[0];
@@ -3675,8 +3698,8 @@
       // [workaround] IE doesn't have input events for contentEditable
       // - see: https://goo.gl/4bfIvA
       var changeEventName = agent.isMSIE ? 'DOMCharacterDataModified DOMSubtreeModified DOMNodeInserted' : 'input';
-      $editable.on(changeEventName, function (event) {
-        context.triggerEvent('change', event);
+      $editable.on(changeEventName, function () {
+        context.triggerEvent('change', $editable.html());
       });
 
       $editor.on('focusin', function (event) {
@@ -3688,8 +3711,14 @@
       if (!options.airMode && options.height) {
         $editable.outerHeight(options.height);
       }
+      if (!options.airMode && options.maxHeight) {
+        $editable.css('max-height', options.maxHeight);
+      }
+      if (!options.airMode && options.minHeight) {
+        $editable.css('min-height', options.minHeight);
+      }
 
-      $editable.html($note.html());
+      $editable.html(dom.html($note) || dom.emptyPara);
       history.recordUndo();
     };
 
@@ -3851,9 +3880,9 @@
     /* jshint ignore:start */
     // native commands(with execCommand), generate function for execCommand
     var commands = ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript',
-                    'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull',
-                    'formatBlock', 'removeFormat',
-                    'backColor', 'foreColor', 'fontName'];
+      'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull',
+      'formatBlock', 'removeFormat',
+      'backColor', 'foreColor', 'fontName'];
 
     for (var idx = 0, len = commands.length; idx < len; idx ++) {
       this[commands[idx]] = (function (sCmd) {
@@ -3950,8 +3979,8 @@
      * @param {String} sUrl
      * @return {Promise}
      */
-    this.insertImage = function (sUrl, filename) {
-      return async.createImage(sUrl, filename).then(function ($image) {
+    this.insertImage = function (sUrl, filename, file_id) {
+      return async.createImage(sUrl, filename, file_id).then(function ($image) {
         beforeCommand();
         $image.css({
           display: '',
@@ -3994,7 +4023,7 @@
       // If onImageUpload options setted
       if (callbacks.onImageUpload) {
         context.triggerEvent('image.upload', files);
-      // else insert Image as dataURL
+        // else insert Image as dataURL
       } else {
         this.insertImages(files);
       }
@@ -4212,10 +4241,10 @@
       var endPoint = endRange.getEndPoint();
 
       range.create(
-        startPoint.node,
-        startPoint.offset,
-        endPoint.node,
-        endPoint.offset
+          startPoint.node,
+          startPoint.offset,
+          endPoint.node,
+          endPoint.offset
       ).select();
     });
 
@@ -4337,9 +4366,9 @@
         // [workaround] for firefox bug http://goo.gl/lVfAaI
         if (!$editable.is(':focus') && agent.isFF) {
           range.createFromNode($editable[0])
-               .normalize()
-               .collapse()
-               .select();
+              .normalize()
+              .collapse()
+              .select();
         }
       }
     };
@@ -4545,7 +4574,7 @@
   var CodeMirror;
   if (agent.hasCodeMirror) {
     if (agent.isSupportAmd) {
-      require(['CodeMirror'], function (cm) {
+      require(['codemirror'], function (cm) {
         CodeMirror = cm;
       });
     } else {
@@ -4968,9 +4997,9 @@
       }
 
       shortcut = shortcut.replace('BACKSLASH', '\\')
-                         .replace('SLASH', '/')
-                         .replace('LEFTBRACKET', '[')
-                         .replace('RIGHTBRACKET', ']');
+          .replace('SLASH', '/')
+          .replace('LEFTBRACKET', '[')
+          .replace('RIGHTBRACKET', ']');
 
       return ' (' + shortcut + ')';
     };
@@ -5074,7 +5103,7 @@
             checkClassName : options.icons.menuCheck,
             items: options.fontNames.filter(function (name) {
               return agent.isFontInstalled(name) ||
-                list.contains(options.fontNamesIgnoreCheck, name);
+                  list.contains(options.fontNamesIgnoreCheck, name);
             }),
             click: context.createInvokeHandler('editor.fontName')
           })
@@ -5293,7 +5322,7 @@
               width: options.insertTableMaxSize.col + 'em',
               height: options.insertTableMaxSize.row + 'em'
             }).mousedown(context.createInvokeHandler('editor.insertTable'))
-              .on('mousemove', self.tableMoveHandler);
+                .on('mousemove', self.tableMoveHandler);
           }
         }).render();
       });
@@ -5494,12 +5523,12 @@
       if (styleInfo['font-family']) {
         var fontNames = styleInfo['font-family'].split(',').map(function (name) {
           return name.replace(/[\'\"]/g, '')
-            .replace(/\s+$/, '')
-            .replace(/^\s+/, '');
+              .replace(/\s+$/, '')
+              .replace(/^\s+/, '');
         });
         var fontName = list.find(fontNames, function (name) {
           return agent.isFontInstalled(name) ||
-            list.contains(options.fontNamesIgnoreCheck, name);
+              list.contains(options.fontNamesIgnoreCheck, name);
         });
 
         $toolbar.find('.dropdown-fontname li a').each(function () {
@@ -5623,13 +5652,19 @@
       }
     };
 
-    this.activate = function () {
-      var $btn = $toolbar.find('button').not('.btn-codeview');
+    this.activate = function (isIncludeCodeview) {
+      var $btn = $toolbar.find('button');
+      if (!isIncludeCodeview) {
+        $btn = $btn.not('.btn-codeview');
+      }
       ui.toggleBtn($btn, true);
     };
 
-    this.deactivate = function () {
-      var $btn = $toolbar.find('button').not('.btn-codeview');
+    this.deactivate = function (isIncludeCodeview) {
+      var $btn = $toolbar.find('button');
+      if (!isIncludeCodeview) {
+        $btn = $btn.not('.btn-codeview');
+      }
       ui.toggleBtn($btn, false);
     };
   };
@@ -5646,18 +5681,18 @@
       var $container = options.dialogsInBody ? $(document.body) : $editor;
 
       var body = '<div class="form-group">' +
-                   '<label>' + lang.link.textToDisplay + '</label>' +
-                   '<input class="note-link-text form-control" type="text" />' +
-                 '</div>' +
-                 '<div class="form-group">' +
-                   '<label>' + lang.link.url + '</label>' +
-                   '<input class="note-link-url form-control" type="text" value="http://" />' +
-                 '</div>' +
-                 (!options.disableLinkTarget ?
-                   '<div class="checkbox">' +
-                     '<label>' + '<input type="checkbox" checked> ' + lang.link.openInNewWindow + '</label>' +
-                   '</div>' : ''
-                 );
+          '<label>' + lang.link.textToDisplay + '</label>' +
+          '<input class="note-link-text form-control" type="text" />' +
+          '</div>' +
+          '<div class="form-group">' +
+          '<label>' + lang.link.url + '</label>' +
+          '<input class="note-link-url form-control" type="text" value="http://" />' +
+          '</div>' +
+          (!options.disableLinkTarget ?
+              '<div class="checkbox">' +
+              '<label>' + '<input type="checkbox" checked> ' + lang.link.openInNewWindow + '</label>' +
+              '</div>' : ''
+          );
       var footer = '<button href="#" class="btn btn-primary note-link-btn disabled" disabled>' + lang.link.insert + '</button>';
 
       this.$dialog = ui.dialog({
@@ -5690,9 +5725,9 @@
     this.showLinkDialog = function (linkInfo) {
       return $.Deferred(function (deferred) {
         var $linkText = self.$dialog.find('.note-link-text'),
-        $linkUrl = self.$dialog.find('.note-link-url'),
-        $linkBtn = self.$dialog.find('.note-link-btn'),
-        $openInNewWindow = self.$dialog.find('input[type=checkbox]');
+            $linkUrl = self.$dialog.find('.note-link-url'),
+            $linkBtn = self.$dialog.find('.note-link-btn'),
+            $openInNewWindow = self.$dialog.find('input[type=checkbox]');
 
         ui.onDialogShown(self.$dialog, function () {
           context.triggerEvent('dialog.shown');
@@ -5845,19 +5880,19 @@
       if (options.maximumImageFileSize) {
         var unit = Math.floor(Math.log(options.maximumImageFileSize) / Math.log(1024));
         var readableSize = (options.maximumImageFileSize / Math.pow(1024, unit)).toFixed(2) * 1 +
-                           ' ' + ' KMGTP'[unit] + 'B';
+            ' ' + ' KMGTP'[unit] + 'B';
         imageLimitation = '<small>' + lang.image.maximumFileSize + ' : ' + readableSize + '</small>';
       }
 
       var body = '<div class="form-group note-group-select-from-files">' +
-                   '<label>' + lang.image.selectFromFiles + '</label>' +
-                   '<input class="note-image-input form-control" type="file" name="files" accept="image/*" multiple="multiple" />' +
-                   imageLimitation +
-                 '</div>' +
-                 '<div class="form-group" style="overflow:auto;">' +
-                   '<label>' + lang.image.url + '</label>' +
-                   '<input class="note-image-url form-control col-md-12" type="text" />' +
-                 '</div>';
+          '<label>' + lang.image.selectFromFiles + '</label>' +
+          '<input class="note-image-input form-control" type="file" name="files" accept="image/*" multiple="multiple" />' +
+          imageLimitation +
+          '</div>' +
+          '<div class="form-group" style="overflow:auto;">' +
+          '<label>' + lang.image.url + '</label>' +
+          '<input class="note-image-url form-control col-md-12" type="text" />' +
+          '</div>';
       var footer = '<button href="#" class="btn btn-primary note-image-btn disabled" disabled>' + lang.image.insert + '</button>';
 
       this.$dialog = ui.dialog({
@@ -5914,10 +5949,10 @@
 
           // Cloning imageInput to clear element.
           $imageInput.replaceWith($imageInput.clone()
-            .on('change', function () {
-              deferred.resolve(this.files || this.value);
-            })
-            .val('')
+                  .on('change', function () {
+                    deferred.resolve(this.files || this.value);
+                  })
+                  .val('')
           );
 
           $imageBtn.click(function (event) {
@@ -6174,7 +6209,6 @@
     var options = context.options;
     var lang = options.langInfo;
 
-
     this.createShortCutList = function () {
       var keyMap = options.keyMap[agent.isMac ? 'mac' : 'pc'];
 
@@ -6205,7 +6239,7 @@
 
       var body = [
         '<p class="text-center">',
-        '<a href="//summernote.org/" target="_blank">Summernote 0.7.0</a> · ',
+        '<a href="//summernote.org/" target="_blank">Summernote 0.7.1</a> · ',
         '<a href="//github.com/summernote/summernote" target="_blank">Project</a> · ',
         '<a href="//github.com/summernote/summernote/issues" target="_blank">Issues</a>',
         '</p>'
@@ -6521,7 +6555,7 @@
 
 
   $.summernote = $.extend($.summernote, {
-    version: '0.7.0',
+    version: '0.7.1',
     ui: ui,
 
     plugins: {},
@@ -6553,7 +6587,7 @@
       },
 
       buttons: {},
-      
+
       lang: 'en-US',
 
       // toolbar

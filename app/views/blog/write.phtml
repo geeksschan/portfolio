@@ -9,8 +9,8 @@
 
 <div class="write-wrapper">
     <form method="post" action="" id="post-write-form" role="form">
-        <input type="hidden" class="post-id" value="<?php echo $post_id; ?>" />
-        <input type="hidden" class="post-content" name="post_content" value="<?php echo $post_content; ?>" />
+        <input type="hidden" class="post-id" name="post_id" value="<?php echo $post_id; ?>" />
+        <textarea class="post-content" name="post_content"><?php echo $post_content; ?></textarea>
         <div class="title-info">
             <div class="ssc-form-group">
                 <label class="ssc-sr-only">제목</label>
