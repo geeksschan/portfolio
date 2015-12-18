@@ -6,4 +6,5 @@
 
 .note-editor.note-frame .note-editing-area .note-editable {
     padding: 20px;
+    overflow : hidden;
 }

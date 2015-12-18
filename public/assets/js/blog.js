@@ -27,8 +27,7 @@ $(function() {
         $note_editor = null,
         $note_editable = null,
         note_editable_img_count = 0,
-        editable_img_loaded_count = 0,
-        editable_img_loaded = false;
+        editable_img_loaded_count = 0;
 
 
     $window.resize(function() {
@@ -183,11 +182,27 @@ $(function() {
              * @returns {number}
              */
             function getSummernoteHeight($note_editable) {
-                var p_height = 0;
-                $note_editable.find("p").each(function() {
-                    p_height += $(this).outerHeight();
-                });
-                return p_height;
+                var editable_element_height = 0,
+                    $note_editable_p = $note_editable.find("p"),
+                    $note_editable_ol = $note_editable.find("ol"),
+                    $note_editable_ul = $note_editable.find("ul");
+
+                if($note_editable_p.length > 0) {
+                    $note_editable_p.each(function() {
+                        editable_element_height += $(this).outerHeight(true);
+                    });
+                }
+                if($note_editable_ol.length > 0) {
+                    $note_editable_ol.each(function() {
+                        editable_element_height += $(this).outerHeight(true);
+                    });
+                }
+                if($note_editable_ul.length > 0) {
+                    $note_editable_ul.each(function() {
+                        editable_element_height += $(this).outerHeight(true);
+                    });
+                }
+                return editable_element_height;
             }
 
             /**
@@ -197,8 +212,10 @@ $(function() {
              */
             function setSummernoteHeight($note_editable, init_plus_height) {
                 var set_height = getSummernoteHeight($note_editable);
-                if(set_height > 0) {
-                    init_plus_height = (typeof init_plus_height == "undefined")?0:init_plus_height;
+
+                init_plus_height = (typeof init_plus_height == "undefined")?0:init_plus_height;
+
+                if(set_height > 0 && set_height > ($note_editable.outerHeight(true) - 40)) {
                     set_height += init_plus_height;
                     $note_editable.height(set_height);
                 }
@@ -221,10 +238,10 @@ $(function() {
                     //},
                     onImageUpload : function(files, editor, welEditable) {
                         sendFile(files[0], editor, welEditable);
-                    },
-                    onChange: function(contents, $editable) {
-                        console.log('onChange:', contents, $editable);
                     }
+                    //onChange: function(contents, $editable) {
+                    //
+                    //}
                 }
             });
 
@@ -233,11 +250,19 @@ $(function() {
             $note_editor = $(".note-editor");
             $note_editable = $note_editor.find(".note-editable");
 
+
+            // summernote.keyup
+            $summernote.on('summernote.keyup', function(we, e) {
+                if(e.keyCode == 13) {
+                    setSummernoteHeight($note_editable, 20);
+                }
+            });
+
             note_editable_img_count = $note_editable.find("p img").length;
             $note_editable.find("p img").on("load", function() {
                 editable_img_loaded_count++;
                 if(note_editable_img_count == editable_img_loaded_count) {
-                    setSummernoteHeight($note_editable, 40);
+                    setSummernoteHeight($note_editable, 20);
                 }
             });
         }
